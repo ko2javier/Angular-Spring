@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Previene scroll horizontal */
+}
+
+/* Aca pongo lo referente al header para que no se mueva mientras haces 
+scroll hacia abajo espesificamente los z-index */
+
+.header-cero {
+    position: sticky;
+    top: 0;
+    z-index: 1055; /* Ajustar si otros elementos lo sobrepasan */
+    background-color: #fff !important; /* Fijar blanco para evitar cambios de color */
+    /*box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sutil sombra para destacar */
+}
+
+.row-dos ul.nav {
+    z-index: 1056; /* Para garantizar que los dropdowns no queden tapados */
+}
+
+.dropdown-menu {
+    z-index: 1057;
+}
+
+
+.header-uno .imagen-uno{
+    background-color: #D6D6D6;
+   width: 204px;
+
+}
+.header-uno .bi-search {
+    margin-left: 5%;
+}
+.header-uno .bi-person {
+    margin-right: 5%;
+}
+
+.header-uno .row-dos {
+    margin-top: 1.8%;
+}
+
+
+.row-dos .dropdown-toggle::after {
+    display: none; /* Oculta el caret predeterminado de Bootstrap */
+  }
+  
+  .row-dos .bi-chevron-down {
+    transition: transform 0.2s ease; /* Añade animación a la palomita */
+  }
+  
+  .row-dos .dropdown.show .bi-chevron-down {
+    transform: rotate(180deg); /* Invierte la dirección cuando se despliega */
+  }
+
+.nav-link {
+    font-size: 16px; /* Ajusta el tamaño del texto */
+    display: flex;
+    align-items: center; /* Asegura la alineación vertical */
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center; /* Mantiene todos los elementos alineados */
+  }
+/* 4-  Caruseel*/
+.caruseel-uno .carrusel-img {
+    width: 100% !important; /* Asegura que cubra todo el ancho */
+    height: 75vh !important; /* Ajusta la altura al 75% de la ventana del navegador */
+    object-fit: cover !important; /* Recorta las imágenes de forma proporcional */
+}
+
+/*<!-- 5-  Tarjeta que se mueve!!-->*/
+/* Contenedor */
+.image-container {
+    width: 400px; /* Ajusta según tus necesidades */
+    height: 400px; /* Ajusta según tus necesidades */
+    position: relative;
+    overflow: hidden; /* Oculta el contenido que se sale del contenedor */
+    border-radius: 0; /* Mantén los bordes rectos */
+    transition: border-radius 0.3s ease; /* Por si necesitas una transición en bordes */
+  }
+  
+  /* Imagen dentro del contenedor */
+  .image-container img {
+    display: block;
+    width: 100%; /* Se adapta al ancho del contenedor */
+    height: 100%; /* Mantiene el tamaño del contenedor */
+    object-fit: cover; /* Mantiene la proporción de la imagen */
+    transition: transform 0.5s ease; /* Efecto de acercamiento suave */
+  }
+  
+  /* Efecto hover */
+  .image-container:hover img {
+    transform: scale(1.05); /* Aumenta el tamaño de la imagen */
+  }
+  
+  .image-container:hover {
+    border-radius: 0; /* Asegúrate de que no cambie el contenedor */
+  }
+
+  /*<!-- 6-  Tarjetas !!-->*/
+  
+  .card-img-top {
+    width: 100%; /* Asegura que la imagen ocupe el ancho completo del contenedor */
+    height: 200px; /* Ajusta la altura del contenedor de la imagen */
+    object-fit: cover; /* Hace que la imagen se recorte para llenar el contenedor */
+    display: block; /* Evita márgenes adicionales por comportamiento inline */
+  }
+
+  .tarjetas2{
+    margin-left: 2%;
+   /* margin-left: 5%;*/
+  }
+  
+  
+  
