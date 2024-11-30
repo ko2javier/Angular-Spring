@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
@@ -6,11 +7,20 @@ import { AuthService } from '@auth0/auth0-angular';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   isAuthenticated$ = this.auth.isAuthenticated$; // Observable que verifica si el usuario está autenticado
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
+  
+  ngOnInit(): void {
+    this.isAuthenticated$.subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        // Redirigir a WorkBench si el usuario está autenticado
+        this.router.navigate(['/workbench']);
+      }
+    });
+  }
 
   login() {
     this.auth.loginWithRedirect();

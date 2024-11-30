@@ -1,4 +1,3 @@
-<!-- Contenedor Principal -->
 <div class="container-fluid p-0">
   <!-- Header -->
   <header class="bg-dark text-white py-2 sticky-sm-top">
@@ -7,7 +6,7 @@
           <div> Welcome  {{ userName }}</div>
           <div class="d-flex align-items-center">
               <!-- Ícono Carrito -->
-              <div id="cart-icon" class="position-relative me-3" *ngIf="isSellerOrAdmin()">
+              <div id="cart-icon" class="position-relative me-3" >
                   <svg fill="#ffffff" height="38px" width="38px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 472.615 472.615">
                       <g>
                           <polygon points="454.452,229.524 432.159,291.15 74.389,291.15 74.389,23.975 0,23.975 0,43.289 55.074,43.289 55.074,310.463 445.701,310.463 472.615,236.098"></polygon>
@@ -15,7 +14,7 @@
                       <circle cx="329.511" cy="398.454" r="50.186"></circle>
                       <circle cx="142.513" cy="398.454" r="50.186"></circle>
                   </svg>
-                  <a href="#" routerLink="/cart"><span id="cart-count" class="cart-count-custom-header">{{ cartCount }}</span></a>
+                  <a href="#" routerLink="/cart" ><span id="cart-count" class="cart-count-custom-header">{{ cartCount }}</span></a>
               </div >
               <a href="#" (click)="logout()">
                 <!-- Ícono Logout -->
@@ -49,24 +48,25 @@
               <!-- Menú Items -->
               <div id="asideMenu" class="collapse d-md-block">
                   <div class="d-flex flex-column py-4 px-3 mt-4 ">
-                      <a href="" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
+                      <a href="#" routerLink="" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-fill me-3" viewBox="0 0 16 16">
                               <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
                               <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
                           </svg>
                          <span >Home</span> 
                       </a>
-                      <a href="#" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
+                      <a href="#" routerLink="" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
                           <svg version="1.1" id="_x32_" class="me-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 0 512 512" xml:space="preserve" fill="#000000">
                               <path d="M429.75,56.692c-5.641-4-12.891-5.031-19.422-2.734l-242.875,85c-30.625-1.453-51.484-9.844-65.859-19.203 c-4.328-2.813-5.266-4.469-5.266-4.469c-2.594-2.594-3.594-6.188-2.859-9.891c0.75-3.703,3.391-6.734,6.953-7.984l217.359-76.063 c3.266-1.156,6.891-0.641,9.703,1.359c0.25,0.188,0.469,0.438,0.703,0.625l15.906-5.75c-0.984-5.453-3.938-10.391-8.547-13.641 c-5.641-4.016-12.891-5.031-19.422-2.75l-228.578,80c-8.563,3-14.297,11.094-14.297,20.156v5.578v352.312 c0,0,15.063,49,94.203,52.766l242.688-84.938c17.125-6,28.609-22.171,28.609-40.328V74.114 C438.75,67.192,435.391,60.692,429.75,56.692z"></path>
                           </svg>
                           Sales History
                       </a>
-                      <a href="#" routerLink="/cart"class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
-                          <svg width="30px" height="30px" class="me-2" viewBox="0 0 24 24" fill="none" 
-                          xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.08416 2.7512C2.22155 2.36044 2.6497 2.15503 3.04047 2.29242L3.34187 2.39838C3.95839 2.61511 4.48203 2.79919 4.89411 3.00139C5.33474 3.21759 5.71259 3.48393 5.99677 3.89979C6.27875 4.31243 6.39517 4.76515 6.4489 5.26153C6.47295 5.48373 6.48564 5.72967 6.49233 6H17.1305C18.8155 6 20.3323 6 20.7762 6.57708C21.2202 7.15417 21.0466 8.02369 20.6995 9.76275L20.1997 12.1875C19.8846 13.7164 19.727 14.4808 19.1753 14.9304C18.6236 15.38 17.8431 15.38 16.2821 15.38H10.9792C8.19028 15.38 6.79583 15.38 5.92943 14.4662C5.06302 13.5523 4.99979 12.5816 4.99979 9.64L4.99979 7.03832C4.99979 6.29837 4.99877 5.80316 4.95761 5.42295C4.91828 5.0596 4.84858 4.87818 4.75832 4.74609C4.67026 4.61723 4.53659 4.4968 4.23336 4.34802C3.91052 4.18961 3.47177 4.03406 2.80416 3.79934L2.54295 3.7075C2.15218 3.57012 1.94678 3.14197 2.08416 2.7512Z" fill="#1C274C"></path> <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z" fill="#1C274C"></path> <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z" 
-                              fill="#1C274C"></path> </g></svg>
-                          Goto Cart
+                      <a href="#" routerLink="/workbench" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
+                        <svg fill="#000000" height="30px" width="30px" class="me-2" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 297 297" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M51.65,104.728H245.35c3.354,0,6.083-2.728,6.083-6.082V69.988c0-3.354-2.729-6.082-6.083-6.082H51.65 c-3.354,0-6.083,2.728-6.083,6.082v28.658C45.567,102,48.296,104.728,51.65,104.728z"></path> <path d="M290.918,156.645h-25.034l8.207,20.386h16.827c3.354,0,6.082-2.728,6.082-6.082v-8.221 C297,159.374,294.272,156.645,290.918,156.645z"></path> <polygon points="83.089,156.645 74.882,177.031 222.118,177.031 213.911,156.645 "></polygon> <path d="M78.187,122.157c-1.39-2.058-3.61-3.238-6.093-3.238h-5.526c-3.016,0-5.694,1.809-6.821,4.608l-40.046,99.469 c-0.928,2.303-0.662,4.804,0.728,6.862c1.39,2.057,3.61,3.237,6.093,3.237h5.526c3.017,0,5.694-1.809,6.821-4.607l40.046-99.47 C79.842,126.714,79.577,124.214,78.187,122.157z"></path> <path d="M31.116,156.645H6.082c-3.354,0-6.082,2.729-6.082,6.083v8.221c0,3.354,2.728,6.082,6.082,6.082h16.827L31.116,156.645z"></path> <path d="M237.253,123.526c-1.127-2.798-3.805-4.607-6.821-4.607h-5.526c-2.483,0-4.703,1.18-6.093,3.238 c-1.39,2.057-1.655,4.557-0.728,6.861l40.046,99.471c1.127,2.797,3.804,4.606,6.821,4.606h5.526c2.483,0,4.703-1.18,6.093-3.237 c1.39-2.058,1.655-4.558,0.728-6.862L237.253,123.526z">
+
+                        </path> </g> </g></svg>
+                          WorkBench
                       </a>
 
                       <a *ngIf="isAdmin()" href="#" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
@@ -89,46 +89,40 @@
               <tr>
                 <th scope="col-5">Name</th>
                 <th scope="col-2">Price</th>
-                <th scope="col-2">Stock</th>
-                <th scope="col-3" *ngIf="isSellerOrAdmin()">Add to Cart</th>
+                <th scope="col-4">Quantity</th>
+               
               </tr>
             </thead>
             <tbody class="text-center table-group-divider">
-              <tr *ngFor="let product of products">
+              <tr *ngFor="let product of cartItems">
                 <td>{{ product.name }}</td>
-                <td>{{ product.price  }}</td>
-                <td>{{ product.stock }}</td>
+                <td>{{ product.price | currency }}</td>
 
-                <!-- TD que relaciona el Add cart-->
-                <td class="text-center" *ngIf="isSellerOrAdmin()">
-                  <div class="d-flex justify-content-center align-items-center">
-                    <!-- Botón + -->
-                    <button class="btn btn-sm boton-td-green"  (click)="incrementQuantity(product.id)">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                      </svg>
-                    </button>
-                    <!-- Botón - -->
-                    <button class="btn btn-sm boton-td-red me-2"  (click)="decrementQuantity(product.id)">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
-                      </svg>
-                    </button>
-                    <!-- Cantidad -->
-                    <span>{{ quantities[product.id][1] }}</span>
-                  </div>
+                <td class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-sm boton-td-green"  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                  </button>
+                  <span class="mx-2">{{ product.quantity }}</span>
+                  <button class="btn btn-sm boton-td-red me-2"  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                    </svg>
+                  </button>
                 </td>
+
               </tr>
             </tbody>
-            <tfoot *ngIf="isSellerOrAdmin()">
+            <tfoot >
                 <tr class="table-success">
                   <td colspan="1" class="text-center"><strong>Total:</strong></td>
                   <td colspan="1" class="text-center">{{ calculateTotal()| currency }}</td>
-                  <td colspan="1" class="text-center"></td>
+                  
                   <td class="text-center">
-                    <button class="btn btn-danger" (click)="resetCart()">Reset</button>
+                    <button class="btn btn-danger" >Reset</button>
                   </td>
                 </tr>
               </tfoot>

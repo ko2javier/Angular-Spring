@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+// Interfaz Sales definida directamente en este archivo
+export interface Sales {
+  id: number;
+  name: string;
+  price: number;
+  cantidad: number;
+  user: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class SalesService {
+  private apiUrl = 'http://localhost:5000/api/sales'; // URL del backend para ventas
+
+  constructor(private http: HttpClient) {}
+
+  // Obtener todas las ventas
+  getSales(): Observable<Sales[]> {
+    return this.http.get<Sales[]>(this.apiUrl);
+  }
+}

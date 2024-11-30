@@ -1,0 +1,89 @@
+
+
+/*<!--1- header nav-->*/
+.logo-header{
+       
+    height: 50px;
+    width: auto;
+}
+.logout{
+    width: 30px;
+    height: 30px;
+}
+
+.logout svg{
+    position: absolute;
+    top:2%;
+}
+.cart-count-custom-header{
+    position: absolute;
+   top: -10%; 
+    margin-left: -70%;
+    color: white;
+    
+    
+}
+.icon-container {
+background-color: #212529;
+display: inline-flex;
+justify-content: center;
+align-items: center;
+width: 50px;
+height: 50px;
+border-radius: 50%; 
+}
+
+/***** Aside *****/
+aside {
+height: 100vh;
+position: sticky;
+top: 0;
+overflow-y: auto;
+}
+
+aside a {
+    display: flex;
+    width: 100%; /* Para que abarquen el ancho completo */
+}
+.custom-width{
+    width: 75%;
+}
+
+
+aside a:hover {
+background-color: #e8f5e9;
+border-radius: 8px;
+}
+
+.bi {
+flex-shrink: 0;
+}
+#aside-div{
+grid-template-columns: 1fr 3fr; gap: 0;
+}
+
+
+/*<!--2- tabla--> */
+
+.tabla-main{
+margin-right: 10%;
+}
+.boton-td-red svg:hover{
+    background-color: #DC3545;
+    border-radius: 100%;
+
+}
+.boton-td-green svg:hover{
+    background-color: #198754;
+    border-radius: 100%;
+
+}
+.cart-count-custom{
+    position: absolute;
+   top: -7%;
+   
+    margin-left: -74%;
+}
+
+
+
