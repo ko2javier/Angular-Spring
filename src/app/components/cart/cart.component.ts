@@ -16,20 +16,21 @@ export class CartComponent implements OnInit {
   userName: string = ''; // Nombre del usuario
   cartCount: number = 0; // Conteo del carrito
   cartItems: CartProduct[] = []; // Productos en el carrito
+  cart_from_bench: CartProduct[] = []; // Productos seleccionados para el carrito que vienen del bench
  
 
-  constructor(private auth: AuthService, private productsService: ProductsService,  private cartService: CartService) {}
-/*
-  ngOnInit(): void {
-    this.loadUserData();
-    this.loadCart();
+  constructor(private auth: AuthService, private productsService: ProductsService,  private cartService: CartService) {
+      this.cart_from_bench= this.productsService.getStoredcart_bench();
+  }
 
-  }*/
 
+  
   ngOnInit(): void {
     this.loadUserData();
     this.cartItems = this.cartService.getCartItems();
     this.updateCartCount();
+
+
     console.log('Cart items cargados en CartComponent:', JSON.stringify(this.cartItems, null, 2));
     console.log(environment.isCartActive+ " este es el valor ahora");
 
@@ -77,4 +78,64 @@ calculateTotal(): number {
       logoutParams: { federated: true },
     });
   }
+
+  resetCart(): void {
+
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('cart_bench');
+    localStorage.removeItem('products');
+    environment.isCartActive=0;
+     // Actualizar contador del carrito
+    this.cartCount=0;
+    this.cartService.resetCart();
+    this.loadCart();
+    
+  }
+// metodo para incrementar productos
+  incrementQuantity(productId: number): void {
+    const product = this.cartItems.find((item) => item.id === productId);
+    if (product) {
+      //console.log('Producto antes de actualizar:', JSON.stringify(product));
+      if (product.stock > 0) {
+        product.stock -= 1;
+        product.quantity += 1;
+  
+        this.cartService.updateCartItems(this.cartItems);
+        this.productsService.updateCartBenchProduct(product);
+        this.updateCartCount();
+  
+        //console.log('Producto después de actualizar:', JSON.stringify(product));
+      } else {
+        console.warn('No hay stock disponible para este producto.');
+      }
+    } else {
+      console.error('Producto no encontrado en el carrito.');
+    }
+    
+  }
+
+  // metodo para incrementar productos
+  decrementQuantity(productId: number): void {
+    const product = this.cartItems.find((item) => item.id === productId);
+    if (product) {
+     
+      if (product.quantity> 0) {
+        product.stock += 1;
+        product.quantity -= 1;
+  
+        this.productsService.updateCartBenchProduct(product);
+        this.cartService.updateCartItems(this.cartItems);
+        this.updateCartCount();
+  
+        
+      } else {
+        console.warn('No hay stock disponible para este producto.');
+      }
+    } else {
+      console.error('Producto no encontrado en el carrito.');
+    }
+   
+  }
+  
+  
 }

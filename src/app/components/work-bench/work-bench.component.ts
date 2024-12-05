@@ -17,10 +17,11 @@ export class WorkBenchComponent implements OnInit {
   userRoles: string[] = []; // Guardar roles del usuario
   userName: string = ''; // Variable para el nombre del usuario
   cartCount: number = 0; // Variable para el conteo del carrito
+  displayCartProducts: boolean = false; // Por defecto, se muestran 'products'
   products: Products[] = []; // Aquí almacenaremos los productos
   quantities: { [key: number]: [number, number] } = {}; // Mapa de stock actual y cantidad seleccionada
   cartProducts: CartProduct[] = []; // Productos seleccionados para el carrito
-  cart_temp: CartProduct[] = []; // Productos seleccionados para el carrito
+
   
   
   constructor(private auth: AuthService, private productsService: ProductsService,  private cartService: CartService) {}
@@ -54,10 +55,9 @@ export class WorkBenchComponent implements OnInit {
         console.error('Error obteniendo el Access Token:', error);
       }
     );
-    if (environment.isCartActive===0){
-      this.loadProducts(); // Cargar productos al iniciar
-    }
     
+      this.loadProducts(); // Cargar productos al iniciar
+  
   }
 
   // Métodos para verificar roles
@@ -75,84 +75,106 @@ export class WorkBenchComponent implements OnInit {
 
   // Método para logout
   logout(): void {
+    environment.isCartActive = 0; // Reiniciar el estado del carrito
+    localStorage.removeItem('products');
+    localStorage.removeItem('cart_bench');
+    localStorage.removeItem('cartItems');
+    
     this.auth.logout({
       logoutParams: { federated: true },
     });
   }
 
-    // Método para cargar los productos desde la API
-/*
-loadProducts(): void {
-  this.productsService.getProducts().subscribe(
-    (data) => {
-     this.products = data; // Almacenar productos en el array original
-      // Inicializar cantidades y carrito
-      this.quantities = {}; // Reiniciar las cantidades
-      this.cartProducts = []; // Reiniciar el carrito
-      console.log('Productos antes del mapeo:', this.products);
-      
-      this.cart_temp= this.products.map((product) => ({
-        ...product,
-        quantity: 0,
-      }));
-      console.log('Card after el mapeo:', this.cart_temp);
-      
-      this.products.forEach((product) => {
-      // Inicializar stockActual y cantidadSeleccionada
-      this.quantities[product.id] = [product.stock, 0];
-        // Mapear cada producto a un CartProduct inicial
-        const cartProduct: CartProduct = {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-          quantity: 0, // Cantidad inicial
-        };
-        this.cartProducts.push(cartProduct);
-       
-      });
-    },
-    (error) => {
-      console.error('Error al cargar los productos:', error);
-    }
-  );
-  
+LoadCart_Items(): void{
  
-  console.log('this.cartProducts after el mapeo:', this.cartProducts);
-}*/
+    this.productsService.getProducts().subscribe(
+      (data) => {
+        // Almacenar productos originales
+        this.products = data;
+       
+        // Inicializar cantidades y carrito
+        this.quantities = {}; // Reiniciar cantidades
+        this.cartProducts = data.map((product) => {
+          // Inicializar stockActual y cantidadSeleccionada en `this.quantities`
+          this.quantities[product.id] = [product.stock, 0];
+
+          // Crear y devolver el CartProduct
+          return {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            quantity: 0, // Cantidad inicial
+          } as CartProduct;
+        });// end of this.products.map
+        this.productsService.set_cart_bench(this.cartProducts); // mando los valores al service pra recuperarlos en la 2da llamada
+       
+        console.log('CartProducts después del mapeo:', this.cartProducts);
+        
+      },
+      (error) => {
+        console.error('Error al cargar los productos:', error);
+      }
+    );
+    environment.isCartActive=1;
+  
+
+}
 loadProducts(): void {
   console.log(" valor de enviroment:"+  environment.isCartActive) ;
-  this.productsService.getProducts().subscribe(
-    (data) => {
-      // Almacenar productos originales
-      this.products = data;
-      console.log('Productos antes del mapeo:', this.products);
+  if (environment.isCartActive===0){
+    this.productsService.getProducts().subscribe(
+      (data) => {
+        // Almacenar productos originales
+        this.products = data;
+       
+        // Inicializar cantidades y carrito
+        this.quantities = {}; // Reiniciar cantidades
+        this.cartProducts = data.map((product) => {
+          // Inicializar stockActual y cantidadSeleccionada en `this.quantities`
+          this.quantities[product.id] = [product.stock, 0];
 
-      // Inicializar cantidades y carrito
-      this.quantities = {}; // Reiniciar cantidades
-      this.cartProducts = this.products.map((product) => {
-        // Inicializar stockActual y cantidadSeleccionada en `this.quantities`
-        this.quantities[product.id] = [product.stock, 0];
+          // Crear y devolver el CartProduct
+          return {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            quantity: 0, // Cantidad inicial
+          } as CartProduct;
+        });// end of this.products.map
+        this.productsService.set_cart_bench(this.cartProducts); // mando los valores al service pra recuperarlos en la 2da llamada
+       
+        console.log('CartProducts después del mapeo:', this.cartProducts);
+        
+      },
+      (error) => {
+        console.error('Error al cargar los productos:', error);
+      }
+    );
+    environment.isCartActive=1;
+  }
+  else if(environment.isCartActive===1 ) {
+    this.cartProducts= this.productsService.getStoredcart_bench();
+    this.displayCartProducts = true; // Por defecto, se muestran 'products'
+    this.updateCartCount();
 
-        // Crear y devolver el CartProduct
-        return {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-          quantity: 0, // Cantidad inicial
-        } as CartProduct;
-      });
+    this.quantities = {}; // Reiniciar cantidades
 
-      console.log('CartProducts después del mapeo:', this.cartProducts);
-      
-    },
-    (error) => {
-      console.error('Error al cargar los productos:', error);
-    }
-  );
-  environment.isCartActive=1;
+    this.cartProducts.forEach((product) => {
+      // Sincronizar cantidades y stock directamente desde cartProducts
+      this.quantities[product.id] = [product.stock, product.quantity];
+    });
+
+        console.log('CartProducts  con envi ==1:', this.cartProducts);
+
+  }
 }
+/**
+   * Método para cargar productos, utilizando CartService para mantener el estado entre cambios
+   */
+
+
 
 
  // Incrementar cantidad de un producto
@@ -166,15 +188,17 @@ incrementQuantity(productId: number): void {
     // Sincronizar con `cartProducts`
     const cartProduct = this.cartProducts.find((product) => product.id === productId);
     if (cartProduct) {
-      cartProduct.quantity = quantity + 1;
-      this.products[cartProduct.id-1].stock=stockActual-1;
+      cartProduct.quantity+= 1;
+      cartProduct.stock-= 1;
+      
     }
-
+    this.productsService.set_cart_bench(this.cartProducts);    
     this.updateCartCount(); // Actualizar contador del carrito
     this.updateCartService(); //Actualizar El servicio del cart
-    console.log(" valores mayor que cero en el service:" + this.cartService.getCartItems().length);
+    //console.log(" valores mayor que cero en el service:" + this.cartService.getCartItems().length);
   }
 }
+
 
 // Decrementar cantidad de un producto
 decrementQuantity(productId: number): void {
@@ -187,26 +211,51 @@ decrementQuantity(productId: number): void {
     // Sincronizar con `cartProducts`
     const cartProduct = this.cartProducts.find((product) => product.id === productId);
     if (cartProduct) {
-      cartProduct.quantity = quantity - 1;
+      cartProduct.quantity -= 1;
+    
+      cartProduct.stock+= 1;
 
-      this.products[cartProduct.id-1].stock=stockActual+1;
     }
-
+    this.productsService.set_cart_bench(this.cartProducts);
     this.updateCartCount(); // Actualizar contador del carrito
     this.updateCartService(); //Actualizar El servicio del cart
-    console.log(" valores mayor que cero en el service:" + this.cartService.getCartItems());
+   // console.log(" valores mayor que cero en el service:" + this.cartService.getCartItems());
   }
 }
 
 // Actualizar el número del carrito
 updateCartCount(): void {
-  this.cartCount = this.cartProducts.reduce((total, product) => total + product.quantity, 0);
+  if (!this.cartProducts || this.cartProducts.length === 0) {
+    this.cartCount = 0;
+    console.log('No hay productos en cartProducts.');
+    return;
+  }
+
+  console.log('cartProducts antes de reducir:', JSON.stringify(this.cartProducts, null, 2));
+  
+  this.cartCount = this.cartProducts.reduce(
+    (total, product) => total + (product.quantity || 0),
+    0
+  );
+
+  console.log('Cart count actualizado:', this.cartCount);
 }
+
 
 // Calcular el total dinámico
 calculateTotal(): number {
   return this.cartProducts.reduce((total, product) => total + product.quantity * product.price, 0);
 }
+
+
+// Actualizar CartService 
+updateCartService(): void {
+  const filteredProducts = this.cartProducts.filter((product) => product.quantity > 0);
+  this.cartService.updateCartItems(filteredProducts); // Esto debería actualizar el servicio.
+  console.log('Items enviados al servicio:', filteredProducts);
+}
+
+
 
 // Resetear el carrito
 resetCart(): void {
@@ -222,21 +271,16 @@ resetCart(): void {
     }
     cartProduct.quantity = 0;  // Reiniciar cantidad en `cartProducts`
   });
+  
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('cart_bench');
+  localStorage.removeItem('products');
+  environment.isCartActive=0;
 
   // Actualizar contador del carrito
-  this.updateCartCount();
-  this.cartService.resetCart();
-  
+  this.cartCount=0;
+  this.cartService.resetCart(); 
 }
-
- // Actualizar CartService 
- updateCartService(): void {
-  const filteredProducts = this.cartProducts.filter((product) => product.quantity > 0);
-  this.cartService.updateCartItems(filteredProducts); // Esto debería actualizar el servicio.
-  console.log('Items enviados al servicio:', filteredProducts);
-}
-
-
-
+ 
 
 }

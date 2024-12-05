@@ -94,30 +94,30 @@
               </tr>
             </thead>
             <tbody class="text-center table-group-divider">
-              <tr *ngFor="let product of products">
-                <td>{{ product.name }}</td>
-                <td>{{ product.price  }}</td>
-                <td>{{ product.stock }}</td>
+              <tr *ngFor="let item of (displayCartProducts ? cartProducts : products)">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.stock }}</td>
 
                 <!-- TD que relaciona el Add cart-->
                 <td class="text-center" *ngIf="isSellerOrAdmin()">
                   <div class="d-flex justify-content-center align-items-center">
                     <!-- Botón + -->
-                    <button class="btn btn-sm boton-td-green"  (click)="incrementQuantity(product.id)">
+                    <button class="btn btn-sm boton-td-green"  (click)="incrementQuantity(item.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                       </svg>
                     </button>
                     <!-- Botón - -->
-                    <button class="btn btn-sm boton-td-red me-2"  (click)="decrementQuantity(product.id)">
+                    <button class="btn btn-sm boton-td-red me-2"  (click)="decrementQuantity(item.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                       </svg>
                     </button>
                     <!-- Cantidad -->
-                    <span>{{ quantities[product.id][1] }}</span>
+                    <span>{{ quantities[item.id][1] }}</span>
                   </div>
                 </td>
               </tr>
