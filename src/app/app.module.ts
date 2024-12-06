@@ -11,15 +11,20 @@ import { authConfig } from './services/auth.config';
 import { AuthModule } from '@auth0/auth0-angular';
 import { WorkBenchComponent } from './components/work-bench/work-bench.component';
 import { AuthGuard } from './services/auth.guard';
-import { VentasComponent } from './components/ventas/ventas.component';
+
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { CartComponent } from './components/cart/cart.component';
+import { SalesComponent } from './components/sales/sales.component';
+import { SalesService } from '@services/SalesService';
+import { StockComponent } from './components/stock/stock.component';
+
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'workbench', component: WorkBenchComponent, canActivate: [AuthGuard] }, // Protege esta ruta con el guard
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard] }, // Protege esta ruta con el guard
+  { path: 'sales_history', component: SalesComponent, canActivate: [AuthGuard] }, // Protege esta ruta con el guard
 ];
 
 @NgModule({
@@ -27,8 +32,9 @@ const routes: Routes = [
     AppComponent,
     HomeComponent,
     WorkBenchComponent,
-    VentasComponent,
-    CartComponent
+    CartComponent,
+    SalesComponent,
+    StockComponent, 
     
   
   ],
@@ -49,10 +55,12 @@ const routes: Routes = [
   ],
   providers: [
     {
+      
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    }
+      multi: true, 
+    },
+    SalesService // Agregas el servicio aquí
   ],
   bootstrap: [AppComponent]
 })

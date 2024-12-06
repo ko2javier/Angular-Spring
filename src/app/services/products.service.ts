@@ -12,7 +12,7 @@ import { CartProduct } from '@models/CartProduct';
 })
 export class ProductsService {
   private apiUrl = 'http://localhost:5000/api/prod'; // URL del backend para productos
-  private products: Products[] = []; // Variable para almacenar productos localmente
+
   private cart_bench: CartProduct[] = []; // Todos los productos en el bench
 
   constructor(private http: HttpClient) {
@@ -38,24 +38,8 @@ export class ProductsService {
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-  // Guardar productos en el localStorage y en la variable local
-  setProducts(products: Products[]): void {
-    this.products = products; // Guardar en la variable local
-    sessionStorage.setItem('products', JSON.stringify(products)); // Guardar en localStorage
-  }
-  getStoredProducts(): Products[] {
-   /* if (this.products.length > 0) {
-      return this.products; // Retornar productos desde la variable local
-    }*/
-
-    const storedProducts = localStorage.getItem('products');
-    if (storedProducts) {
-      this.products = JSON.parse(storedProducts);
-      return this.products; // Retornar productos desde el localStorage
-    }
-    
-    return []; // Retornar array vacío si no hay productos
-  }
+  
+ 
 
   set_cart_bench(cart_bench: CartProduct[]): void {
     this.cart_bench = cart_bench; // Guardar en la variable local

@@ -66,9 +66,9 @@ export class CartComponent implements OnInit {
     }
       
     // Calcular el total dinámico
-calculateTotal(): number {
-  return this.cartItems.reduce((total, product) => total + product.quantity * product.price, 0);
-}
+  calculateTotal(): number {
+    return this.cartItems.reduce((total, product) => total + product.quantity * product.price, 0);
+  }
 
 // Actualizar el número del carrito
 

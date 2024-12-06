@@ -76,7 +76,7 @@ export class WorkBenchComponent implements OnInit {
   // Método para logout
   logout(): void {
     environment.isCartActive = 0; // Reiniciar el estado del carrito
-    localStorage.removeItem('products');
+  
     localStorage.removeItem('cart_bench');
     localStorage.removeItem('cartItems');
     
@@ -84,7 +84,7 @@ export class WorkBenchComponent implements OnInit {
       logoutParams: { federated: true },
     });
   }
-
+/*
 LoadCart_Items(): void{
  
     this.productsService.getProducts().subscribe(
@@ -119,7 +119,8 @@ LoadCart_Items(): void{
     environment.isCartActive=1;
   
 
-}
+}*/
+
 loadProducts(): void {
   console.log(" valor de enviroment:"+  environment.isCartActive) ;
   if (environment.isCartActive===0){
@@ -170,12 +171,6 @@ loadProducts(): void {
 
   }
 }
-/**
-   * Método para cargar productos, utilizando CartService para mantener el estado entre cambios
-   */
-
-
-
 
  // Incrementar cantidad de un producto
 incrementQuantity(productId: number): void {
@@ -212,7 +207,6 @@ decrementQuantity(productId: number): void {
     const cartProduct = this.cartProducts.find((product) => product.id === productId);
     if (cartProduct) {
       cartProduct.quantity -= 1;
-    
       cartProduct.stock+= 1;
 
     }
@@ -274,7 +268,7 @@ resetCart(): void {
   
   localStorage.removeItem('cartItems');
   localStorage.removeItem('cart_bench');
-  localStorage.removeItem('products');
+ 
   environment.isCartActive=0;
 
   // Actualizar contador del carrito

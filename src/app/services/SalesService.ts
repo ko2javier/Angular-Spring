@@ -1,19 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Sales } from '@models/SalesModel';
 
-// Interfaz Sales definida directamente en este archivo
-export interface Sales {
-  id: number;
-  name: string;
-  price: number;
-  cantidad: number;
-  user: string;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SalesService {
   private apiUrl = 'http://localhost:5000/api/sales'; // URL del backend para ventas
 

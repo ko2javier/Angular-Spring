@@ -84,19 +84,6 @@ margin-right: 10%;
    
     margin-left: -74%;
 }
-/* boton aside pago !!*/
 
-.b_aside_pago {
-    width: 25% !important;
-    height: 25% !important;
-}
 
-.b_aside_pago .checkout{
-    margin: 2% 0 5% 22%;
-    
-}
-.b_aside_pago .checkout:hover{
-    background-color: #9cc6b2!important;
-    color: #212529 !important;
-}
 
