@@ -69,7 +69,7 @@
                           Goto Cart
                       </a>
 
-                      <a *ngIf="isAdmin()" href="#" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
+                      <a *ngIf="isAdmin()" href="#" routerLink="/stock" class="d-flex align-items-center text-decoration-none text-dark py-3 mb-2">
                           <svg width="35px" height="35px" class="me-2" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>barchart</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="add" fill="#000000" transform="translate(42.666667, 85.333333)"> <path d="M21.3333333,1.42108547e-14 L85.3333333,1.42108547e-14 L85.3333333,277.333333 L21.3333333,277.333333 L21.3333333,1.42108547e-14 Z M128,128 L192,128 L192,277.333333 L128,277.333333 L128,128 Z M341.333333,85.3333333 L405.333333,85.3333333 L405.333333,277.333333 L341.333333,277.333333 L341.333333,85.3333333 Z M234.666667,42.6666667 L298.666667,42.6666667 L298.666667,277.333333 L234.666667,277.333333 L234.666667,42.6666667 Z M3.55271368e-14,298.666667 L426.666667,298.666667 L426.666667,341.333333 L3.55271368e-14,341.333333 L3.55271368e-14,298.666667 Z"
                                id="Combined-Shape"> </path> </g> </g> </g></svg>
                           Stock
@@ -94,30 +94,30 @@
               </tr>
             </thead>
             <tbody class="text-center table-group-divider">
-              <tr *ngFor="let item of (displayCartProducts ? cartProducts : products)">
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.stock }}</td>
+              <tr *ngFor="let product of cartProducts">
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.stock }}</td>
 
                 <!-- TD que relaciona el Add cart-->
                 <td class="text-center" *ngIf="isSellerOrAdmin()">
                   <div class="d-flex justify-content-center align-items-center">
                     <!-- Botón + -->
-                    <button class="btn btn-sm boton-td-green"  (click)="incrementQuantity(item.id)">
+                    <button class="btn btn-sm boton-td-green"  (click)="incrementQuantity(product.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                       </svg>
                     </button>
                     <!-- Botón - -->
-                    <button class="btn btn-sm boton-td-red me-2"  (click)="decrementQuantity(item.id)">
+                    <button class="btn btn-sm boton-td-red me-2"  (click)="decrementQuantity(product.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                       </svg>
                     </button>
                     <!-- Cantidad -->
-                    <span>{{ quantities[item.id][1] }}</span>
+                    <span>{{ quantities[product.id][1] }}</span>
                   </div>
                 </td>
               </tr>

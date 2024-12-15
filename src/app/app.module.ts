@@ -22,9 +22,13 @@ import { StockComponent } from './components/stock/stock.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'workbench', component: WorkBenchComponent, canActivate: [AuthGuard] }, // Protege esta ruta con el guard
-  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] }, // Protege esta ruta con el guard
-  { path: 'sales_history', component: SalesComponent, canActivate: [AuthGuard] }, // Protege esta ruta con el guard
+  //{ path: '', redirectTo: '/home', pathMatch: 'full' }, // Cambia la ruta predeterminada
+  { path: 'home', component: HomeComponent },
+  { path: 'workbench', component: WorkBenchComponent, canActivate: [AuthGuard] }, 
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+  { path: 'sales_history', component: SalesComponent, canActivate: [AuthGuard] }, 
+  { path: 'stock', component: StockComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/home' } // Ruta para 404
 ];
 
 @NgModule({

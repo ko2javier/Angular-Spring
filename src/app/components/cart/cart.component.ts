@@ -17,6 +17,8 @@ export class CartComponent implements OnInit {
   cartCount: number = 0; // Conteo del carrito
   cartItems: CartProduct[] = []; // Productos en el carrito
   cart_from_bench: CartProduct[] = []; // Productos seleccionados para el carrito que vienen del bench
+  private pendingSales: any[] = []; // Variable temporal para almacenar las ventas
+
  
 
   constructor(private auth: AuthService, private productsService: ProductsService,  private cartService: CartService) {
@@ -30,9 +32,9 @@ export class CartComponent implements OnInit {
     this.cartItems = this.cartService.getCartItems();
     this.updateCartCount();
 
-
+    /*
     console.log('Cart items cargados en CartComponent:', JSON.stringify(this.cartItems, null, 2));
-    console.log(environment.isCartActive+ " este es el valor ahora");
+    console.log(environment.isCartActive+ " este es el valor ahora");*/
 
   }
   
@@ -99,6 +101,7 @@ export class CartComponent implements OnInit {
       if (product.stock > 0) {
         product.stock -= 1;
         product.quantity += 1;
+        
   
         this.cartService.updateCartItems(this.cartItems);
         this.productsService.updateCartBenchProduct(product);
@@ -121,7 +124,9 @@ export class CartComponent implements OnInit {
      
       if (product.quantity> 0) {
         product.stock += 1;
+        
         product.quantity -= 1;
+        
   
         this.productsService.updateCartBenchProduct(product);
         this.cartService.updateCartItems(this.cartItems);
@@ -136,6 +141,103 @@ export class CartComponent implements OnInit {
     }
    
   }
+
+    // Confirmar la compra y enviar los productos al backend
+/*
+    updateProductsAndSales(): void {
+      console.log(" entre en el  updateProductsAndSales()")
+      // Transformar `CartProduct` a `Products`
+      const updatedProducts = this.cartItems.map(cartItem => ({
+        id: cartItem.id,
+        name: cartItem.name,
+        price: cartItem.price,
+        stock: cartItem.stock // Reducimos el stock
+      }));
+    
+      // Preparar los datos de ventas
+      const salesData = this.cartItems.map(cartItem => ({
+        name: cartItem.name,
+        price: cartItem.price,
+        cantidad: cartItem.quantity,
+        user: this.userName // Obtenemos el usuario desde el CartService
+        // La fecha será manejada en SalesService
+      }));
+    
+      // Actualizar productos y registrar ventas
+      console.log("updatedProducts: "+ updatedProducts);
+      this.cartService.updateProductsAndRegisterSales(updatedProducts, salesData).subscribe(
+        () => {
+          console.log('Productos actualizados y ventas registradas exitosamente');
+          this.resetCart(); // Limpiar el carrito
+          alert('Compra realizada con éxito.');
+        },
+        error => {
+          console.error('Error al procesar la compra:', error);
+        }
+      );
+    }*/
+
+      updateProductsAndSales(): void {
+        console.log('Iniciando el proceso de actualización de productos.');
+      
+        // Transformar `CartProduct` a `Products`
+        const updatedProducts = this.cartItems.map(cartItem => ({
+          id: cartItem.id,
+          name: cartItem.name,
+          price: cartItem.price,
+          stock: cartItem.stock, // Reducimos el stock
+        }));
+      
+        // Preparar los datos de ventas y almacenarlos temporalmente
+        this.pendingSales = this.cartItems.map(cartItem => ({
+          name: cartItem.name,
+          price: cartItem.price,
+          cantidad: cartItem.quantity,
+          user: this.userName, // Obtenemos el usuario
+          date: new Date().toISOString().split('T')[0] // Fecha actual (yyyy-MM-dd)
+        }));
+      
+        // Actualizar productos
+        this.cartService.updateProducts(updatedProducts).subscribe({
+          next: () => {
+            console.log('Productos actualizados exitosamente.');
+      
+            // Limpia el carrito y dispara el registro de ventas
+            this.resetCart();
+          
+          },
+          error: error => {
+            console.error('Error al actualizar los productos:', error);
+            
+          },
+        });
+
+        this.registerPendingSales(); // Registro de ventas
+      }
+      
+      /*Hacemos la llamada para registrar las ventas !ª
+      */
+      registerPendingSales(): void {
+        if (this.pendingSales.length === 0) {
+          console.log('No hay ventas pendientes para registrar.');
+          return;
+        }
+      
+        console.log('Registrando ventas pendientes:', this.pendingSales);
+      
+        this.cartService.registerSalesOnly(this.pendingSales).subscribe({
+          next: () => {
+            console.log('Ventas registradas exitosamente.');
+            
+            this.pendingSales = []; // Limpiar las ventas pendientes
+          },
+          error: error => {
+            console.error('Error al registrar las ventas:', error);
+           
+          },
+        });
+      }
+      
   
   
 }

@@ -43,13 +43,14 @@ export class WorkBenchComponent implements OnInit {
     // Obtener el `accessToken` para extraer roles
     this.auth.getAccessTokenSilently().subscribe(
       (token) => {
+        console.log(token)
         const tokenParts = token.split('.');
         const payload = JSON.parse(atob(tokenParts[1])); // Decodificar el payload del JWT
 
         // Extraer roles desde el namespace configurado
         const rolesNamespace = 'https://ko2.com/roles/roles'; // Cambia esto según tu configuración
         this.userRoles = payload[rolesNamespace] || [];
-        console.log('User Roles:', this.userRoles);
+        //console.log('User Roles:', this.userRoles);
       },
       (error) => {
         console.error('Error obteniendo el Access Token:', error);
@@ -109,7 +110,7 @@ LoadCart_Items(): void{
         });// end of this.products.map
         this.productsService.set_cart_bench(this.cartProducts); // mando los valores al service pra recuperarlos en la 2da llamada
        
-        console.log('CartProducts después del mapeo:', this.cartProducts);
+       
         
       },
       (error) => {
@@ -122,7 +123,7 @@ LoadCart_Items(): void{
 }*/
 
 loadProducts(): void {
-  console.log(" valor de enviroment:"+  environment.isCartActive) ;
+  //console.log(" valor de enviroment:"+  environment.isCartActive) ;
   if (environment.isCartActive===0){
     this.productsService.getProducts().subscribe(
       (data) => {
@@ -145,8 +146,8 @@ loadProducts(): void {
           } as CartProduct;
         });// end of this.products.map
         this.productsService.set_cart_bench(this.cartProducts); // mando los valores al service pra recuperarlos en la 2da llamada
+        console.log(" load desde el  environment.isCartActive===0")
        
-        console.log('CartProducts después del mapeo:', this.cartProducts);
         
       },
       (error) => {
@@ -157,6 +158,7 @@ loadProducts(): void {
   }
   else if(environment.isCartActive===1 ) {
     this.cartProducts= this.productsService.getStoredcart_bench();
+    console.log(" load desde el  environment.isCartActive===1")
     this.displayCartProducts = true; // Por defecto, se muestran 'products'
     this.updateCartCount();
 
@@ -167,37 +169,36 @@ loadProducts(): void {
       this.quantities[product.id] = [product.stock, product.quantity];
     });
 
-        console.log('CartProducts  con envi ==1:', this.cartProducts);
-
+        
   }
 }
 
- // Incrementar cantidad de un producto
+ 
+// Incrementar cantidad de un producto
 incrementQuantity(productId: number): void {
-  console.log(" valor de enviroment:"+  environment.isCartActive) ;
-  const [stockActual, quantity] = this.quantities[productId];
-  if (stockActual > 0) {
+  const cartProduct = this.cartProducts.find((product) => product.id === productId);
+  if (cartProduct && cartProduct.stock > 0) {
     // Actualizar stock y cantidad
-    this.quantities[productId] = [stockActual - 1, quantity + 1];
+    cartProduct.quantity += 1;
+    cartProduct.stock -= 1;
+    //console.log("cartProduct.quantity:"+ cartProduct.quantity);
+    //console.log("cartProduct.stock:"+ cartProduct.stock);
 
-    // Sincronizar con `cartProducts`
-    const cartProduct = this.cartProducts.find((product) => product.id === productId);
-    if (cartProduct) {
-      cartProduct.quantity+= 1;
-      cartProduct.stock-= 1;
-      
-    }
-    this.productsService.set_cart_bench(this.cartProducts);    
-    this.updateCartCount(); // Actualizar contador del carrito
-    this.updateCartService(); //Actualizar El servicio del cart
-    //console.log(" valores mayor que cero en el service:" + this.cartService.getCartItems().length);
+    // Sincronizar las cantidades en el carrito
+    this.quantities[productId] = [cartProduct.stock, cartProduct.quantity];
+
+    // Actualizar servicios y contador
+    this.productsService.set_cart_bench(this.cartProducts);
+    this.updateCartCount();
+    this.updateCartService();
   }
 }
+
 
 
 // Decrementar cantidad de un producto
 decrementQuantity(productId: number): void {
-  console.log(" valor de enviroment:"+  environment.isCartActive) ;
+ // console.log(" valor de enviroment:"+  environment.isCartActive) ;
   const [stockActual, quantity] = this.quantities[productId];
   if (quantity > 0) {
     // Actualizar stock y cantidad
@@ -213,7 +214,7 @@ decrementQuantity(productId: number): void {
     this.productsService.set_cart_bench(this.cartProducts);
     this.updateCartCount(); // Actualizar contador del carrito
     this.updateCartService(); //Actualizar El servicio del cart
-   // console.log(" valores mayor que cero en el service:" + this.cartService.getCartItems());
+  
   }
 }
 
@@ -221,18 +222,17 @@ decrementQuantity(productId: number): void {
 updateCartCount(): void {
   if (!this.cartProducts || this.cartProducts.length === 0) {
     this.cartCount = 0;
-    console.log('No hay productos en cartProducts.');
+    
     return;
   }
 
-  console.log('cartProducts antes de reducir:', JSON.stringify(this.cartProducts, null, 2));
-  
+   
   this.cartCount = this.cartProducts.reduce(
     (total, product) => total + (product.quantity || 0),
     0
   );
 
-  console.log('Cart count actualizado:', this.cartCount);
+ 
 }
 
 
@@ -246,9 +246,29 @@ calculateTotal(): number {
 updateCartService(): void {
   const filteredProducts = this.cartProducts.filter((product) => product.quantity > 0);
   this.cartService.updateCartItems(filteredProducts); // Esto debería actualizar el servicio.
-  console.log('Items enviados al servicio:', filteredProducts);
+
 }
 
+/*
+resetCart(): void {
+  // Reset local quantities and cartProducts
+  this.cartProducts.forEach((cartProduct) => {
+    const [originalStock, quantity] = this.quantities[cartProduct.id];
+    this.quantities[cartProduct.id] = [originalStock + quantity, 0];
+    cartProduct.quantity = 0;
+  });
+
+  // Clear localStorage and reset environment variable
+  environment.isCartActive = 0;
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('cart_bench');
+
+  this.cartCount=0;
+  this.cartService.resetCart(); 
+
+  // Reload products from API to ensure correct stock values
+  this.loadProducts();
+}*/
 
 
 // Resetear el carrito
@@ -265,15 +285,16 @@ resetCart(): void {
     }
     cartProduct.quantity = 0;  // Reiniciar cantidad en `cartProducts`
   });
-  
+  environment.isCartActive=0;
   localStorage.removeItem('cartItems');
   localStorage.removeItem('cart_bench');
  
-  environment.isCartActive=0;
+  
 
   // Actualizar contador del carrito
   this.cartCount=0;
   this.cartService.resetCart(); 
+  this.loadProducts();
 }
  
 

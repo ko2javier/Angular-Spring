@@ -5,13 +5,16 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Products } from '@models/products.model';
 import { CartProduct } from '@models/CartProduct';
+import { environment } from '../enviroment/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
-  private apiUrl = 'http://localhost:5000/api/prod'; // URL del backend para productos
+  //private apiUrl =   'http://localhost:5000/api/prod'; // URL del backend para productos
+
+  private apiUrl =  `${environment.apiUrl}/prod`;
 
   private cart_bench: CartProduct[] = []; // Todos los productos en el bench
 
@@ -45,7 +48,7 @@ export class ProductsService {
     this.cart_bench = cart_bench; // Guardar en la variable local
    
     localStorage.setItem('cart_bench', JSON.stringify(cart_bench)); // Guardar en localStorage
-    console.log('Guardando en cart_bench:', JSON.stringify(cart_bench, null, 2));
+    //console.log('Guardando en cart_bench:', JSON.stringify(cart_bench, null, 2));
   }
 
   getStoredcart_bench(): CartProduct[] {
