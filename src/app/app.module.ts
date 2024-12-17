@@ -17,7 +17,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { SalesComponent } from './components/sales/sales.component';
 import { SalesService } from '@services/SalesService';
 import { StockComponent } from './components/stock/stock.component';
-
+import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
 
 
 const routes: Routes = [
@@ -45,6 +45,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
     AuthModule.forRoot({

@@ -19,12 +19,19 @@ export class StockComponent {
   products: Products[] = []; // Aquí almacenaremos los productos
   cartItems: CartProduct[] = []; // Productos en el carrito
   cart_from_bench: CartProduct[] = []; // Productos seleccionados para el carrito que vienen del bench
+  updatedStock: { [id: number]: number |null } = {}; // Almacena valores de los cuadros de texto
 
   rowsPerPage: number = 7; // Número de filas por página
-currentPage: number = 1; // Página actual
-totalPages: number = 0; // Total de páginas
-paginatedProducts: Products[] = []; // Productos visibles en la tabla
+ currentPage: number = 1; // Página actual
+ totalPages: number = 0; // Total de páginas
+ paginatedProducts: Products[] = []; // Productos visibles en la tabla
 
+ /**Variables del toast */
+ public isDuplicateEntry: boolean = false; // Tracks if the entry is a duplicate
+  public errorAcction: boolean = false;
+  public titleTiast: string = '';
+  public subTitleTiast: string = '';
+  public commentToast: string = '';
   
 
   
@@ -55,23 +62,7 @@ loadUserData(): void {
     }
   );
 }
-/*
-loadApiData(): void {
 
-  this.productsService.getProducts().subscribe(
-    (data) => {
-      // Almacenar productos originales
-      this.products = data;
-     
-      // Inicializar cantidades y carrito
-      
-    },
-    (error) => {
-      console.error('Error al cargar los productos:', error);
-    }
-  );
-  //environment.isCartActive=; 
-}*/
 
   // Verificar si es admin
   isAdmin(): boolean {
@@ -139,6 +130,79 @@ logout(): void {
   });
 }
 
+ // Actualizar stock
+ /*
+ updateStock(productId: number): void {
+  const productToUpdate = this.products.find(p => p.id === productId);
 
+  if (productToUpdate && this.updatedStock[productId]) {
+
+    productToUpdate.stock = this.updatedStock[productId]; // Actualizar el stock localmente
+
+    this.productsService.updateProduct(productToUpdate).subscribe(() => {
+      environment.isCartActive=0;
+      this.updatedStock[productId] = null;
+      alert(`Stock actualizado para el producto con ID: ${productId}`);
+      this.loadApiData() // Refrescar la lista después de actualizar
+    }, (error) => {
+      console.error('Error actualizando el stock:', error);
+    });
+  }
+}*/
+// Actualizar stock
+updateStock(productId: number): void {
+
+
+  const productToUpdate = this.products.find(p => p.id === productId);
+
+  // Validar que el producto existe y el stock ingresado es válido (positivo y no null)
+  const newStock = this.updatedStock[productId];
+  if (productToUpdate && newStock !== null && newStock > 0) {
+
+    productToUpdate.stock = newStock; // Actualizar el stock localmente
+
+    this.productsService.updateProduct(productToUpdate).subscribe(() => {
+      environment.isCartActive = 0;
+
+      // Restablecer el input a null después de la actualización
+      this.updatedStock[productId] = null;
+
+      this.loadApiData(); // Refrescar la lista después de actualizar
+    }, (error) => {
+      
+      console.error('Error actualizando el stock:', error);
+    });
+
+  } else {
+    // Si el valor no es válido, mostrar una alerta
+    this.isDuplicateEntry = true; // Set the variable to true if it's a duplicate entry
+        this.titleTiast = 'Error'
+        this.subTitleTiast = 'Bad Input'
+        this.commentToast = 'Only positive numbers are allowed'
+        this.errorAcction = true;
+        setTimeout(()=>{
+          this.isDuplicateEntry = false;
+        }, 4000)
+  }
+}
+
+  // Borrar un producto
+  deleteItem(productId: number): void {
+    if (confirm(`¿Estás seguro de que quieres eliminar el producto con ID: ${productId}?`)) {
+      this.productsService.deleteProduct(productId).subscribe(() => {
+        alert(`Producto con ID ${productId} eliminado`);
+        environment.isCartActive=0;
+        this.loadApiData() // Refrescar la lista después de eliminar
+      }, (error) => {
+        console.error('Error eliminando el producto:', error);
+      });
+    }
+  }
+
+
+  /** Para el toast */
+closeToast(){
+  this.isDuplicateEntry = false;
+}
 
 }

@@ -1,5 +1,8 @@
 import {  Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { AuthHandlerService } from '@services/AuthHandlerService';
+import { RouteService } from '@services/route.service';
+
 
 @Component({
   selector: 'app-root',
@@ -7,23 +10,19 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authHandler: AuthHandlerService,
+    private routeService: RouteService ) {}
+
   title = 'Auth_V3';
 
-  ngOnInit(): void {
-    // Escucha cambios en la navegación
-    /*
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Guarda la ruta actual en localStorage
-        localStorage.setItem('lastVisitedRoute', event.urlAfterRedirects);
-      }
-    });*/
 
-    // Redirige a la última ruta visitada al cargar
-    const lastRoute = localStorage.getItem('lastVisitedRoute');
-    /*if (lastRoute) {
-      this.router.navigateByUrl(lastRoute);
+
+  ngOnInit(): void {
+
+   /* this.authHandler.loadFromCookies(); // Si usas cookies
+    /*
+    if (this.authHandler.getRoles().length > 0) {
+      this.routeService.navigateToLastRoute(); // Navegar a la última ruta
     }*/
   }
   

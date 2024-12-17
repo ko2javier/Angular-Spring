@@ -140,20 +140,22 @@
                         <td>{{ product.price | currency }}</td>
                         <td>{{ product.stock }}</td>
                         <td>
-                            <input type="number" class="form-control text-center ms-3" id="Custom03" required
+                            <input type="number" class="form-control text-center ms-3"  [(ngModel)]="updatedStock[product.id]" 
+                            id="Custom03" required
                             style="width: 80px;">
                         </td>
                         <td class="text-center">
-                            <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center" >
                                 
-                                <button class="btn btn-sm boton-td-green ms-3">
+                                <button class="btn btn-sm boton-td-green ms-3" (click)="updateStock(product.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-floppy-fill text-success" viewBox="0 0 16 16">
                                         <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
                                         <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
                                     </svg>
                                 </button>
                                 
-                                <button class="btn btn-sm boton-td-red me-2" data-bs-toggle="tooltip" 
+                                <button class="btn btn-sm boton-td-red me-2" data-bs-toggle="tooltip"
+                                 (click)="deleteItem(product.id)"
 
                                     data-bs-placement="bottom" data-bs-title="Delete Item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18"  height="18" fill="currentColor" class="bi bi-trash3-fill text-danger" viewBox="0 0 16 16">
@@ -215,4 +217,22 @@
         
     </div>
   </div>
+
   
+  
+
+
+  <!--Others-->
+<!--Toast if we don't check the terms and conditions-->
+<div class="toast-container position-fixed p-3 top-0 end-0 mt-5">
+    <div  [ngClass]="{'toast text-white mt-2':true, 'show':(isDuplicateEntry), 'bg-danger':(errorAcction), 'bg-success':(!errorAcction)}" role="alert" area-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">{{titleTiast}}</strong>
+            <small>{{subTitleTiast}}</small>
+            <button class="btn-close btn-close-white" type="button" aria-label="close" (click)="closeToast()"></button>
+        </div>
+        <div class="toast-body">
+            {{commentToast}}
+        </div>
+    </div>
+  </div>
