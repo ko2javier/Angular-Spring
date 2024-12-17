@@ -4,6 +4,7 @@ import { CartProduct } from '@models/CartProduct';
 import { Products } from '@models/products.model';
 import { CartService } from '@services/CartService';
 import { ProductsService } from '@services/products.service';
+import { ToastService } from '@services/toast';
 import { environment } from 'src/app/enviroment/environment';
 
 @Component({
@@ -35,7 +36,8 @@ export class StockComponent {
   
 
   
-  constructor(private auth: AuthService, private productsService: ProductsService,  private cartService: CartService) {
+  constructor(private auth: AuthService, private productsService: ProductsService,  
+    private cartService: CartService, private toastService: ToastService) {
     this.cart_from_bench= this.productsService.getStoredcart_bench();
 }
 
@@ -168,13 +170,27 @@ updateStock(productId: number): void {
       this.updatedStock[productId] = null;
 
       this.loadApiData(); // Refrescar la lista después de actualizar
+      this.toastService.showToast(
+        'Success', 
+        'Stock updated successfully',
+        false,
+        'Update Complete'
+      );
     }, (error) => {
       
       console.error('Error actualizando el stock:', error);
     });
 
   } else {
+    this.toastService.showToast(
+      'Error',
+      'Only positive numbers are allowed',
+      true,
+      'Bad Input'
+    );
+
     // Si el valor no es válido, mostrar una alerta
+    /*
     this.isDuplicateEntry = true; // Set the variable to true if it's a duplicate entry
         this.titleTiast = 'Error'
         this.subTitleTiast = 'Bad Input'
@@ -182,7 +198,7 @@ updateStock(productId: number): void {
         this.errorAcction = true;
         setTimeout(()=>{
           this.isDuplicateEntry = false;
-        }, 4000)
+        }, 4000)*/
   }
 }
 
