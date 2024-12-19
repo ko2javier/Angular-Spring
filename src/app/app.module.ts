@@ -17,7 +17,8 @@ import { CartComponent } from './components/cart/cart.component';
 import { SalesComponent } from './components/sales/sales.component';
 import { SalesService } from '@services/SalesService';
 import { StockComponent } from './components/stock/stock.component';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
+import { FormsModule } from '@angular/forms';
+import { CheckoutComponent } from './components/checkout/checkout.component'; // Importa FormsModule aquí
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
   { path: 'sales_history', component: SalesComponent, canActivate: [AuthGuard] }, 
   { path: 'stock', component: StockComponent, canActivate: [AuthGuard] },
+  { path: 'check', component: CheckoutComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/home' } // Ruta para 404
 ];
 
@@ -38,7 +40,8 @@ const routes: Routes = [
     WorkBenchComponent,
     CartComponent,
     SalesComponent,
-    StockComponent, 
+    StockComponent,
+    CheckoutComponent, 
     
   
   ],

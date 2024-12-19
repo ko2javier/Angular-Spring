@@ -138,8 +138,8 @@
           <div class="col-md-2  me-1 bg-light py-4 b_aside_pago ">
                         
             <h5 class="text-center mt-2">Total: {{ calculateTotal()| currency }}</h5>
-            <button class=" btn btn-sm btn-outline-success mt-3 checkout " (click)="updateProductsAndSales()">Proceed to Checkout</button>
-       
+            <button class=" btn btn-sm btn-outline-success mt-3 checkout " routerLink="/check" >Proceed to Checkout</button>
+       <!--(click)="updateProductsAndSales()"-->
 
     </div>
         </div>
