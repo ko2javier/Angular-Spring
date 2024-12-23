@@ -23,6 +23,8 @@ export class WorkBenchComponent implements OnInit {
   cartProducts: CartProduct[] = []; // Productos seleccionados para el carrito
 
   
+
+  
   
   constructor(private auth: AuthService, private productsService: ProductsService,  private cartService: CartService) {}
 
@@ -85,42 +87,7 @@ export class WorkBenchComponent implements OnInit {
       logoutParams: { federated: true },
     });
   }
-/*
-LoadCart_Items(): void{
- 
-    this.productsService.getProducts().subscribe(
-      (data) => {
-        // Almacenar productos originales
-        this.products = data;
-       
-        // Inicializar cantidades y carrito
-        this.quantities = {}; // Reiniciar cantidades
-        this.cartProducts = data.map((product) => {
-          // Inicializar stockActual y cantidadSeleccionada en `this.quantities`
-          this.quantities[product.id] = [product.stock, 0];
 
-          // Crear y devolver el CartProduct
-          return {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            stock: product.stock,
-            quantity: 0, // Cantidad inicial
-          } as CartProduct;
-        });// end of this.products.map
-        this.productsService.set_cart_bench(this.cartProducts); // mando los valores al service pra recuperarlos en la 2da llamada
-       
-       
-        
-      },
-      (error) => {
-        console.error('Error al cargar los productos:', error);
-      }
-    );
-    environment.isCartActive=1;
-  
-
-}*/
 
 loadProducts(): void {
   //console.log(" valor de enviroment:"+  environment.isCartActive) ;
@@ -134,7 +101,9 @@ loadProducts(): void {
         this.quantities = {}; // Reiniciar cantidades
         this.cartProducts = data.map((product) => {
           // Inicializar stockActual y cantidadSeleccionada en `this.quantities`
-          this.quantities[product.id] = [product.stock, 0];
+         
+          product.id ? (this.quantities[product.id] = [product.stock, 0]) : console.warn('Product ID is undefined. Skipping assignment.');
+
 
           // Crear y devolver el CartProduct
           return {

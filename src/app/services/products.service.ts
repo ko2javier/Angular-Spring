@@ -15,6 +15,7 @@ export class ProductsService {
   //private apiUrl =   'http://localhost:5000/api/prod'; // URL del backend para productos
 
   private apiUrl =  `${environment.apiUrl}/prod`;
+  private apiUrl2 =  `${environment.apiUrl}`;
 
   private cart_bench: CartProduct[] = []; // Todos los productos en el bench
 
@@ -80,6 +81,11 @@ export class ProductsService {
      
    
   }
+
+  // Actualizar múltiples productos
+updateAllProducts(products: Products[]): Observable<any> {
+  return this.http.put(`${this.apiUrl2}/cart`, products);
+}
   
  
 }

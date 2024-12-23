@@ -86,4 +86,15 @@ margin-right: 10%;
 }
 
 
-
+/* Controles de paginacion */
+.pagination .page-item .page-link {
+    color: #000;
+  }
+  .pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .pagination .page-link:hover {
+    background-color: #e9ecef;
+  }
+  

@@ -132,7 +132,7 @@ margin-right: 10%;
     }
 /* Controles de paginacion */
     .pagination .page-item .page-link {
-        color: #007bff;
+        color: #000;
       }
       .pagination .page-item.active .page-link {
         background-color: #007bff;
@@ -142,3 +142,25 @@ margin-right: 10%;
         background-color: #e9ecef;
       }
       
+      
+ /*Parte referida la formulario*/
+.Cont_insert {
+         margin-left: 8% !important;
+        max-width: 75%;
+        max-height: 40%;
+        background: linear-gradient(145deg, #f5f5f5, #e0e0e0); /* Fondo degradado */
+        /* border: 1px solid #ddd;  Borde sutil */
+         border-radius: 5px; /* Esquinas redondeadas */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+        }
+
+button.btn-success_insert {
+        font-size: 1rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        }
+button.btn-success_insert:hover {
+        background-color: #28a745;
+        color: #fff;
+        transform: scale(1.05); /* Efecto hover */
+        }

@@ -24,6 +24,12 @@ export class SalesComponent implements OnInit{
   sales: Sales[]= [];
   cartItems: CartProduct[] = []; // Productos en el carrito 
 
+   /** Variables de paginación */
+   rowsPerPage: number = 8; // Número de filas por página
+   currentPage: number = 1; // Página actual
+   totalPages: number = 0; // Total de páginas calculadas
+   paginatedProducts: Sales[] = []; // Ventas visibles en la página actual
+
   
   constructor(private auth: AuthService, private productsService: ProductsService, 
      private cartService: CartService, private salesService: SalesService) {}
@@ -59,6 +65,7 @@ export class SalesComponent implements OnInit{
       );
       this.load_sales();
       this.loadCart();
+     
     }
 
 
@@ -69,9 +76,40 @@ export class SalesComponent implements OnInit{
       (data) => {
         // Almacenar productos originales
         this.sales = data;
+        this.currentPage = 1; // Página inicial
+        const start = 0;
+        const end = this.rowsPerPage;
+  
+        this.paginatedProducts = this.sales.slice(start, end);
+  
+        // Calcula el número total de páginas
+        this.totalPages = Math.ceil(this.sales.length / this.rowsPerPage);
+        
       });
   }
-  
+/* Lo relacionado con la paginacion !!!*/
+  // Actualizar la paginación
+ // Mostrar la tabla para la página actual
+ displayTable(page: number): void {
+  const start = (page - 1) * this.rowsPerPage;
+  const end = start + this.rowsPerPage;
+  this.paginatedProducts = this.sales.slice(start, end);
+}
+
+// Cambiar página
+changePage(page: number): void {
+  this.currentPage = page;
+
+  const start = (this.currentPage - 1) * this.rowsPerPage;
+  const end = start + this.rowsPerPage;
+
+  // Actualiza la lista de productos visibles
+  this.paginatedProducts = this.sales.slice(start, end);
+}
+
+
+  /* FIN de Lo relacionado con la paginacion !!!*/
+
     // Métodos para verificar roles
     isAdmin(): boolean {
       return this.userRoles.includes('admin');
